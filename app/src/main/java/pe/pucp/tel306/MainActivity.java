@@ -26,6 +26,8 @@ import com.facebook.appevents.AppEventsLogger;
 import java.util.Arrays;
 import java.util.List;
 
+import pe.pucp.tel306.Cliente.PaginaPrincipalCliente;
+import pe.pucp.tel306.Empresa.PaginaPrincipalEmpresa;
 import pe.pucp.tel306.Entity.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -95,19 +97,19 @@ public class MainActivity extends AppCompatActivity {
                 if (snapshot.getValue() != null) {
                     User user = snapshot.getValue(User.class);
                     Log.d("JULIO", "ENCONTRADO");
-//                    if(user != null){
-//                        if(user.getTipo().equalsIgnoreCase("Cliente")){
-//                            Intent intent = new Intent(MainActivity.this, PagPrincipalCliente.class);
-//                            startActivity(intent);
-//                            finish();
-//                            Toast.makeText(MainActivity.this, "Inicio de Sesión Completado", Toast.LENGTH_SHORT).show();
-//                        }else{
-//                            Intent intent = new Intent(MainActivity.this, PaginaPrincipalTI.class);
-//                            startActivity(intent);
-//                            finish();
-//                            Toast.makeText(MainActivity.this, "Inicio de Sesión Completado", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
+                    if(user != null){
+                        if(user.getRol().equalsIgnoreCase("Cliente")){
+                            Intent intent = new Intent(MainActivity.this, PaginaPrincipalCliente.class);
+                            startActivity(intent);
+                            finish();
+                            Toast.makeText(MainActivity.this, "Inicio de Sesión Completado", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Intent intent = new Intent(MainActivity.this, PaginaPrincipalEmpresa.class);
+                            startActivity(intent);
+                            finish();
+                            Toast.makeText(MainActivity.this, "Inicio de Sesión Completado", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }else{
                     Log.d("JULIO", "BÚSQUEDA DE USUARIO FALLIDA 2222222222");
                     Intent intent = new Intent(MainActivity.this, Registro.class);
