@@ -168,7 +168,7 @@ public class AgregarProducto extends AppCompatActivity {
                         String mypk = databaseReference.push().getKey();
                         producto.setPk(mypk);
 
-                        databaseReference.child("Dispositivos/"+producto.getPk()).setValue(producto)
+                        databaseReference.child("Productos/"+producto.getPk()).setValue(producto)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -209,7 +209,7 @@ public class AgregarProducto extends AppCompatActivity {
                     .setCustomMetadata("autor", firebaseUser.getDisplayName())
                     .build();
 
-            UploadTask task = storageReference.child(producto.getNombre()+"/"+producto.getNombreFoto()).putFile(uri, storageMetadata);
+            UploadTask task = storageReference.child(producto.getPk()+"/"+producto.getNombreFoto()).putFile(uri, storageMetadata);
 
 
             task.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
