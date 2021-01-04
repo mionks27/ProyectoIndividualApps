@@ -209,7 +209,7 @@ public class AgregarProducto extends AppCompatActivity {
                     .setCustomMetadata("autor", firebaseUser.getDisplayName())
                     .build();
 
-            UploadTask task = storageReference.child(producto.getPk()+"/"+producto.getNombreFoto()).putFile(uri, storageMetadata);
+            UploadTask task = storageReference.child(producto.getPk()   +"/"+producto.getNombreFoto()).putFile(uri, storageMetadata);
 
 
             task.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

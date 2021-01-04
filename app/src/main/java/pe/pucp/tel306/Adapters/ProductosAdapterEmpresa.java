@@ -1,7 +1,6 @@
 package pe.pucp.tel306.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,9 +49,9 @@ public class ProductosAdapterEmpresa extends RecyclerView.Adapter<ProductosAdapt
         final Producto producto = listaProductos.get(position);
         StorageReference reference =
                 FirebaseStorage.getInstance().getReference().child(producto.getPk()+"/"+producto.getNombreFoto());
-        Glide.with(context).load(reference).into(holder.imagen);
+        Glide.with(context).load(reference).into(holder.imagenPro);
         holder.nombre.setText("Nombre: "+producto.getNombre());
-        holder.precio.setText("Precio: "+ producto.getPrecio());
+        holder.precio.setText("Precio: "+ producto.getPrecio() + " Nuevos Soles");
         holder.descripcion.setText("Descripción: "+ producto.getDescricion());
         holder.stock.setText("Stock: "+ String.valueOf(producto.getStock()));
         holder.editar.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +96,7 @@ public class ProductosAdapterEmpresa extends RecyclerView.Adapter<ProductosAdapt
         TextView precio;
         TextView stock;
         TextView descripcion;
-        ImageView imagen;
+        ImageView imagenPro;
         Button borrar;
         Button editar;
         public ProductoViewHolder(@NonNull View itemView) {
@@ -106,7 +105,7 @@ public class ProductosAdapterEmpresa extends RecyclerView.Adapter<ProductosAdapt
             stock = itemView.findViewById(R.id.textViewStock);
             precio = itemView.findViewById(R.id.textViewPrecio);
             descripcion = itemView.findViewById(R.id.TextViewDescripción);
-            imagen = itemView.findViewById(R.id.imageViewFotoProducto);
+            imagenPro = itemView.findViewById(R.id.imageViewFotoProductoLista);
             borrar = itemView.findViewById(R.id.buttonBorrar);
             editar = itemView.findViewById(R.id.buttonEditar);
         }

@@ -38,7 +38,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
-            android:id="@+id/imageViewFotoProducto"
+            android:id="@+id/imageViewFotoProductoLista"
             android:layout_width="143dp"
             android:layout_height="138dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +70,7 @@
             app:layout_constraintBottom_toTopOf="@+id/buttonEditar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.119"
-            app:layout_constraintStart_toEndOf="@+id/imageViewFotoProducto"
+            app:layout_constraintStart_toEndOf="@+id/imageViewFotoProductoLista"
             app:layout_constraintTop_toBottomOf="@+id/textViewNombre"
             app:layout_constraintVertical_bias="0.203" />
 
