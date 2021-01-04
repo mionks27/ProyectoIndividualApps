@@ -69,10 +69,9 @@
             android:text="TextView"
             app:layout_constraintBottom_toTopOf="@+id/buttonEditar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.119"
             app:layout_constraintStart_toEndOf="@+id/imageViewFotoProductoLista"
             app:layout_constraintTop_toBottomOf="@+id/textViewNombre"
-            app:layout_constraintVertical_bias="0.203" />
+            app:layout_constraintVertical_bias="0.296" />
 
         <TextView
             android:id="@+id/textViewPrecio"
@@ -80,9 +79,8 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             app:layout_constraintBottom_toTopOf="@+id/buttonEditar"
-            app:layout_constraintEnd_toEndOf="@+id/textViewStock"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewStock"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewFotoProductoLista"
             app:layout_constraintTop_toBottomOf="@+id/textViewStock"
             app:layout_constraintVertical_bias="0.24" />
 
@@ -92,9 +90,8 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             app:layout_constraintBottom_toTopOf="@+id/buttonEditar"
-            app:layout_constraintEnd_toEndOf="@+id/textViewPrecio"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textViewPrecio"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageViewFotoProductoLista"
             app:layout_constraintTop_toBottomOf="@+id/textViewPrecio"
             app:layout_constraintVertical_bias="0.477" />
     </androidx.constraintlayout.widget.ConstraintLayout>
