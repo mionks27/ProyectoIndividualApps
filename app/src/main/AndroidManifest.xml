@@ -24,7 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/TemaPrincipal">
-        <activity android:name=".Empresa.PaginaPrincipalEmpresa"></activity>
+        <activity android:name=".Empresa.AgregarProducto"></activity>
+        <activity android:name=".Empresa.PaginaPrincipalEmpresa" />
         <activity android:name=".Cliente.PaginaPrincipalCliente" />
 
         <meta-data
