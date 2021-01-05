@@ -20,10 +20,10 @@
             android:text="Editar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.541"
+            app:layout_constraintHorizontal_bias="0.538"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.932" />
+            app:layout_constraintVertical_bias="0.995" />
 
         <Button
             android:id="@+id/buttonBorrar"
@@ -32,7 +32,7 @@
             android:text="Borrar"
             app:layout_constraintBottom_toBottomOf="@+id/buttonEditar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.436"
+            app:layout_constraintHorizontal_bias="0.418"
             app:layout_constraintStart_toEndOf="@+id/buttonEditar"
             app:layout_constraintTop_toTopOf="@+id/buttonEditar"
             app:layout_constraintVertical_bias="0.0" />
@@ -62,37 +62,40 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.071" />
 
-        <TextView
-            android:id="@+id/textViewStock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/buttonEditar"
+        <LinearLayout
+            android:layout_width="225dp"
+            android:layout_height="136dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.482"
             app:layout_constraintStart_toEndOf="@+id/imageViewFotoProductoLista"
-            app:layout_constraintTop_toBottomOf="@+id/textViewNombre"
-            app:layout_constraintVertical_bias="0.296" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.495">
 
-        <TextView
-            android:id="@+id/textViewPrecio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/buttonEditar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewFotoProductoLista"
-            app:layout_constraintTop_toBottomOf="@+id/textViewStock"
-            app:layout_constraintVertical_bias="0.24" />
+            <TextView
+                android:id="@+id/textViewStock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:text="TextView" />
 
-        <TextView
-            android:id="@+id/TextViewDescripción"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/buttonEditar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewFotoProductoLista"
-            app:layout_constraintTop_toBottomOf="@+id/textViewPrecio"
-            app:layout_constraintVertical_bias="0.477" />
+            <TextView
+                android:id="@+id/textViewPrecio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/TextViewDescripción"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:text="TextView" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

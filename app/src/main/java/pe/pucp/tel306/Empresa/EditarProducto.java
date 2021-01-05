@@ -71,6 +71,9 @@ public class EditarProducto extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d("JULIO","GUARDADO EXITOSO EN TU DATABASE");
+                                    Intent intent = new Intent(EditarProducto.this, PaginaPrincipalEmpresa.class);
+                                    startActivity(intent);
+                                    finish();
                                     Toast.makeText(EditarProducto.this, "Producto editado exitósamente", Toast.LENGTH_SHORT).show();
                                 }
                             })

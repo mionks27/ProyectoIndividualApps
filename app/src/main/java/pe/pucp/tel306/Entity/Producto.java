@@ -9,6 +9,8 @@ public class Producto implements Serializable {
     private String descricion;
     private String nombreFoto;
     private String pk;
+    private String uidUser;
+    private String nombreEmpresa;
 
     public String getNombre() {
         return nombre;
@@ -56,5 +58,21 @@ public class Producto implements Serializable {
 
     public void setPk(String pk) {
         this.pk = pk;
+    }
+
+    public String getUidUser() {
+        return uidUser;
+    }
+
+    public void setUidUser(String uidUser) {
+        this.uidUser = uidUser;
+    }
+
+    public String getNombreEmpresa() {
+        return nombreEmpresa;
+    }
+
+    public void setNombreEmpresa(String nombreEmpresa) {
+        this.nombreEmpresa = nombreEmpresa;
     }
 }

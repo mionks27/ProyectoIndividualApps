@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.ContentValues;
@@ -30,8 +31,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageMetadata;
@@ -40,17 +44,22 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import pe.pucp.tel306.Entity.Producto;
+import pe.pucp.tel306.Entity.User;
 import pe.pucp.tel306.R;
 
 public class AgregarProducto extends AppCompatActivity {
     Uri uri = null;
     Producto producto = new Producto();
+    User user = new User();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_producto);
+        Intent intent =  getIntent();
+        user = (User) intent.getSerializableExtra("user");
     }
 
     public void pickFile(View view) {
@@ -168,8 +177,10 @@ public class AgregarProducto extends AppCompatActivity {
 
                         String mypk = databaseReference.push().getKey();
                         producto.setPk(mypk);
+                        producto.setUidUser(firebaseUser.getUid());
+                        producto.setNombreEmpresa(user.getNombreEmpresa());
 
-                        databaseReference.child("Productos/"+firebaseUser.getUid()+"/"+producto.getPk()).setValue(producto)
+                        databaseReference.child("Productos/"+producto.getPk()).setValue(producto)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -250,5 +261,4 @@ public class AgregarProducto extends AppCompatActivity {
             Log.d("JULIO", "SIN PERMISOOOOOOOOOOOOOOOOOO");
         }
     }
-
 }

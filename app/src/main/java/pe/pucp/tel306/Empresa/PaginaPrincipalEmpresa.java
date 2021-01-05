@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import pe.pucp.tel306.Adapters.ProductosAdapterEmpresa;
 import pe.pucp.tel306.Cliente.PaginaPrincipalCliente;
 import pe.pucp.tel306.Entity.Producto;
+import pe.pucp.tel306.Entity.User;
 import pe.pucp.tel306.MainActivity;
 import pe.pucp.tel306.R;
 
@@ -37,22 +41,100 @@ public class PaginaPrincipalEmpresa extends AppCompatActivity {
         listarProductos();
     }
 
+    ////para relacionar el layout de menú con esta vista
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_empresa, menu);
+        return true;
+    }
+
+    ///para linkear las opciones del menú con una acción en particular de forma centralizada ///también puede realizarse desde el primer método onCreate pero de otra manera, revisar min 01:18:43 del video zoom
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuEmpresa:
+                View view = findViewById(R.id.menuEmpresa);
+                PopupMenu popupMenu = new PopupMenu(this, view);
+                popupMenu.getMenuInflater().inflate(R.menu.meno_popup_empresa, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.historialVentas:
+//                                Intent intent = new Intent(PaginaPrincipalTI.this, SolicitudesPendientes.class);
+//                                startActivity(intent);
+//                                finish();
+                                return true;
+                            case R.id.reservasPendientes:
+//                                Intent intent1 = new Intent(PaginaPrincipalTI.this, SolicitudesPendientes.class);
+//                                startActivity(intent1);
+//                                finish();
+                                return true;
+                            case R.id.gestionarProductos:
+//                                Intent intent = new Intent(PaginaPrincipalTI.this, SolicitudesPendientes.class);
+//                                startActivity(intent);
+//                                finish();
+                                return true;
+                            case R.id.cerrarSesionempresa:
+                                logOut();
+                                return true;
+                            default:
+                                return false;
+
+                        }
+                    }
+                });
+                popupMenu.show();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
     public void agregarProducto(View view){
-        Intent intent = new Intent(PaginaPrincipalEmpresa.this, AgregarProducto.class);
-        startActivity(intent);
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child("users/").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User users = new User();
+                for(DataSnapshot children : snapshot.getChildren()){
+                    User user = children.getValue(User.class);
+                    if(children.getKey().equalsIgnoreCase(firebaseUser.getUid())){
+                        users = user;
+                    }
+                }
+                if(users!=null){
+                    Intent intent = new Intent(PaginaPrincipalEmpresa.this, AgregarProducto.class);
+                    intent.putExtra("user", users);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void listarProductos(){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        databaseReference.child("Productos/"+firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Productos/").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<Producto> productoArrayList = new ArrayList<>();
                 for(DataSnapshot children : snapshot.getChildren()){
                     Producto producto = children.getValue(Producto.class);
-                    productoArrayList.add(producto);
+                    if(producto.getUidUser().equalsIgnoreCase(firebaseUser.getUid())){
+                        productoArrayList.add(producto);
+                    }
                 }
                 if(!productoArrayList.isEmpty()){
                     TextView textView = findViewById(R.id.textViewMessage);

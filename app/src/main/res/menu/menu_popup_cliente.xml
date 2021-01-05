@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/historialCompras"
+        android:title="Historial de Compras" />
+    <item
+        android:id="@+id/comprasRecientes"
+        android:title="Compras Pendientes"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/verProductos"
+        android:title="Productos"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/cerrarsesion"
+        android:title="Cerrar Sesión" />
+</menu>

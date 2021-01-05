@@ -1,6 +1,8 @@
 package pe.pucp.tel306.Entity;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String rol;
     private String telefono;
     private String distrito;

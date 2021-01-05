@@ -6,4 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".Cliente.PaginaPrincipalCliente">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProdusctosCliente"
+        android:layout_width="409dp"
+        android:layout_height="618dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lista de Productos"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewProdusctosCliente"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewMessagecliente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No hay productos"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

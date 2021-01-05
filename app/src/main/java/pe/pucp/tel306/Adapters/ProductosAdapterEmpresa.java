@@ -71,7 +71,7 @@ public class ProductosAdapterEmpresa extends RecyclerView.Adapter<ProductosAdapt
             @Override
             public void onClick(View v) {
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                databaseReference.child("Productos/"+firebaseUser.getUid()+"/"+producto.getPk()).setValue(null)
+                databaseReference.child("Productos/"+producto.getPk()).setValue(null)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
