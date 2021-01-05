@@ -24,7 +24,8 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/TemaPrincipal">
-        <activity android:name=".Empresa.EditarProducto"></activity>
+        <activity android:name=".Cliente.CompraProducto"></activity>
+        <activity android:name=".Empresa.EditarProducto" />
         <activity android:name=".Empresa.AgregarProducto" />
         <activity android:name=".Empresa.PaginaPrincipalEmpresa" />
         <activity android:name=".Cliente.PaginaPrincipalCliente" />

@@ -66,7 +66,7 @@ public class EditarProducto extends AppCompatActivity {
                     producto.setPrecio(Double.parseDouble(precio.getText().toString()));
                     producto.setDescricion(descripcion.getText().toString());
 
-                    databaseReference.child("Productos/"+firebaseUser.getUid()+"/"+producto.getPk()).setValue(producto)
+                    databaseReference.child("Productos/"+producto.getPk()).setValue(producto)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

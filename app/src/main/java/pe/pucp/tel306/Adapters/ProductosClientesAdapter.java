@@ -26,6 +26,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import pe.pucp.tel306.Cliente.CompraProducto;
 import pe.pucp.tel306.Empresa.EditarProducto;
 import pe.pucp.tel306.Entity.Producto;
 import pe.pucp.tel306.R;
@@ -62,9 +63,9 @@ public class ProductosClientesAdapter extends RecyclerView.Adapter<ProductosClie
         holder.comprar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, EditarProducto.class);
-//                intent.putExtra("producto", producto);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, CompraProducto.class);
+                intent.putExtra("producto", producto);
+                context.startActivity(intent);
             }
         });
 

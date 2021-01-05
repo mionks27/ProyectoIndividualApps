@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Cliente.CompraProducto">
+
+    <ImageView
+        android:id="@+id/imageViewComprar"
+        android:layout_width="163dp"
+        android:layout_height="149dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.056"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textViewNombreProductoCompra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewComprar"
+        app:layout_constraintVertical_bias="0.087" />
+
+    <TextView
+        android:id="@+id/textViewstockCompra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewNombreProductoCompra"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewNombreProductoCompra"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNombreProductoCompra"
+        app:layout_constraintVertical_bias="0.053" />
+
+    <TextView
+        android:id="@+id/textViewPreciocompra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewstockCompra"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewstockCompra"
+        app:layout_constraintTop_toBottomOf="@+id/textViewstockCompra"
+        app:layout_constraintVertical_bias="0.075" />
+
+    <TextView
+        android:id="@+id/textViewDescripcionCompra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewPreciocompra"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewPreciocompra"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPreciocompra"
+        app:layout_constraintVertical_bias="0.087" />
+
+    <TextView
+        android:id="@+id/textViewCantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cantidad a comprar"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.063"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDescripcionCompra"
+        app:layout_constraintVertical_bias="0.251" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="273dp"
+        android:layout_height="80dp"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/textView22"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toEndOf="@+id/textView22"
+        app:layout_constraintTop_toTopOf="@+id/textView22"
+        app:layout_constraintVertical_bias="0.16">
+
+        <TextView
+            android:id="@+id/textViewUbicacionCompra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="mostrarInfoDeUbicacion"
+        android:text="Obtener ubicación"
+        app:layout_constraintBottom_toBottomOf="@+id/button9"
+        app:layout_constraintEnd_toStartOf="@+id/button9"
+        app:layout_constraintHorizontal_bias="0.352"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button9"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ubicación"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textViewCantidad"
+        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintStart_toStartOf="@+id/textViewCantidad"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCantidad"
+        app:layout_constraintVertical_bias="0.226" />
+
+    <EditText
+        android:id="@+id/editTextNumberCantidadAComprar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewCantidad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintStart_toEndOf="@+id/textViewCantidad"
+        app:layout_constraintTop_toTopOf="@+id/textViewCantidad"
+        app:layout_constraintVertical_bias="0.476" />
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="confirmarReserva"
+        android:text="Pedido de Compra"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.903"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.532" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
