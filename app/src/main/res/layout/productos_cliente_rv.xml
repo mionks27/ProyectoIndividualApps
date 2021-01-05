@@ -17,27 +17,27 @@
 
         <ImageView
             android:id="@+id/imageViewProductoListaClientes"
-            android:layout_width="149dp"
-            android:layout_height="152dp"
+            android:layout_width="172dp"
+            android:layout_height="191dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintHorizontal_bias="0.066"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.496"
+            app:layout_constraintVertical_bias="0.712"
             tools:srcCompat="@tools:sample/avatars" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="203dp"
-            android:layout_height="170dp"
+            android:layout_width="198dp"
+            android:layout_height="112dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.611"
+            app:layout_constraintHorizontal_bias="0.36"
             app:layout_constraintStart_toEndOf="@+id/imageViewProductoListaClientes"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.514">
+            app:layout_constraintVertical_bias="0.496">
 
             <TextView
                 android:id="@+id/textViewStockListaClientes"
@@ -82,7 +82,9 @@
             android:text="Comprar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.796"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.537" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
