@@ -76,7 +76,7 @@ public class ProductosAdapterEmpresa extends RecyclerView.Adapter<ProductosAdapt
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d("JULIO","BORRADO EXITOSO EN TU DATABASE");
-                                Toast.makeText(context, "Dispositivo editado exitósamente", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Producto borrado exitósamente", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

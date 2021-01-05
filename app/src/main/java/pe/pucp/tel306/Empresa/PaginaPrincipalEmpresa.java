@@ -68,9 +68,9 @@ public class PaginaPrincipalEmpresa extends AppCompatActivity {
 //                                finish();
                                 return true;
                             case R.id.reservasPendientes:
-//                                Intent intent1 = new Intent(PaginaPrincipalTI.this, SolicitudesPendientes.class);
-//                                startActivity(intent1);
-//                                finish();
+                                Intent intent1 = new Intent(PaginaPrincipalEmpresa.this, VentasPendientes.class);
+                                startActivity(intent1);
+                                finish();
                                 return true;
                             case R.id.gestionarProductos:
 //                                Intent intent = new Intent(PaginaPrincipalTI.this, SolicitudesPendientes.class);
