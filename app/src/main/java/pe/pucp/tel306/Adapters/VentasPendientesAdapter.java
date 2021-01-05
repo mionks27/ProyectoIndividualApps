@@ -2,6 +2,7 @@ package pe.pucp.tel306.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +10,31 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.lang.reflect.MalformedParameterizedTypeException;
 import java.util.ArrayList;
 
 import pe.pucp.tel306.Cliente.CompraProducto;
+import pe.pucp.tel306.Empresa.Mapa;
+import pe.pucp.tel306.Empresa.RechazarCompra;
+import pe.pucp.tel306.Entity.JavaMailAPI;
 import pe.pucp.tel306.Entity.Peticioncompra;
 import pe.pucp.tel306.Entity.Producto;
 import pe.pucp.tel306.R;
@@ -58,25 +71,68 @@ public class VentasPendientesAdapter extends RecyclerView.Adapter<VentasPendient
         holder.gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, CompraProducto.class);
-//                intent.putExtra("producto", producto);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, Mapa.class);
+                intent.putExtra("latitud",peticioncompra.getLatitud());
+                intent.putExtra("longitud",peticioncompra.getLongitud());
+                intent.putExtra("nombreUsuario",peticioncompra.getNombreComprador());
+                context.startActivity(intent);
             }
         });
         holder.aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, CompraProducto.class);
-//                intent.putExtra("producto", producto);
-//                context.startActivity(intent);
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                peticioncompra.setEstado("Aceptado");
+                databaseReference.child("Solicitudes/"+peticioncompra.getPk()).setValue(peticioncompra)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d("JULIO","GUARDADO EXITOSO EN TU DATABASE");
+                                    String mail = peticioncompra.getCorreoUser();
+                                    String subject = "Venta de "+" "+peticioncompra.getCantidad()+" "+peticioncompra.getProducto().getNombre();
+                                    String message = "Su venta fue Aceptada por la empresa "+ peticioncompra.getProducto().getNombreEmpresa();
+                                    JavaMailAPI javaMailAPI = new JavaMailAPI(context,mail,subject,message);
+                                    javaMailAPI.execute();
+                                    Toast.makeText(context, "Producto vendido exitósamente", Toast.LENGTH_SHORT).show();
+                                }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
             }
         });
         holder.rechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, CompraProducto.class);
-//                intent.putExtra("producto", producto);
-//                context.startActivity(intent);
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                databaseReference.child("Productos/").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Producto producto1 = null;
+                        for(DataSnapshot children : snapshot.getChildren()){
+                            Producto producto = children.getValue(Producto.class);
+                            if(producto.getPk().equalsIgnoreCase(peticioncompra.getProducto().getPk())){
+                                producto1 = producto;
+                            }
+                        }
+
+                        if(producto1 != null){
+                            Intent intent = new Intent(context, RechazarCompra.class);
+                            intent.putExtra("peticioncompra", peticioncompra);
+                            intent.putExtra("producto",producto1);
+                            context.startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
             }
         });
 
