@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pe.pucp.tel306">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -29,7 +28,7 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/TemaPrincipal">
-
+        <activity android:name=".Cliente.HisotrialPedidos"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -44,7 +43,7 @@
 
         <activity
             android:name=".Empresa.Mapa"
-            android:label="@string/title_activity_mapa"></activity>
+            android:label="@string/title_activity_mapa" />
         <activity android:name=".Empresa.RechazarCompra" />
         <activity android:name=".Empresa.VentasPendientes" />
         <activity android:name=".Cliente.CompraProducto" />
