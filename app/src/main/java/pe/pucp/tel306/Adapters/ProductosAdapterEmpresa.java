@@ -1,6 +1,7 @@
 package pe.pucp.tel306.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -23,6 +26,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import pe.pucp.tel306.Empresa.EditarProducto;
 import pe.pucp.tel306.Entity.Producto;
 import pe.pucp.tel306.R;
 
@@ -47,6 +51,7 @@ public class ProductosAdapterEmpresa extends RecyclerView.Adapter<ProductosAdapt
     @Override
     public void onBindViewHolder(@NonNull ProductoViewHolder holder, int position) {
         final Producto producto = listaProductos.get(position);
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         StorageReference reference =
                 FirebaseStorage.getInstance().getReference().child(producto.getPk()+"/"+producto.getNombreFoto());
         Glide.with(context).load(reference).into(holder.imagenPro);
@@ -57,16 +62,16 @@ public class ProductosAdapterEmpresa extends RecyclerView.Adapter<ProductosAdapt
         holder.editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, EditarDispositivo.class);
-//                intent.putExtra("device", device);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, EditarProducto.class);
+                intent.putExtra("producto", producto);
+                context.startActivity(intent);
             }
         });
         holder.borrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                databaseReference.child("Productos/"+producto.getPk()).setValue(null)
+                databaseReference.child("Productos/"+firebaseUser.getUid()+"/"+producto.getPk()).setValue(null)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

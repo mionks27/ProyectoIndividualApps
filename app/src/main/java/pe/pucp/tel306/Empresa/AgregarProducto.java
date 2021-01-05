@@ -142,6 +142,7 @@ public class AgregarProducto extends AppCompatActivity {
     }
 
     public void guardarDispositivo(View view){
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         EditText editTextNombre = findViewById(R.id.editTextTextNombreProductoCrear);
         EditText editTextTextDescripcion = findViewById(R.id.editTextDescripcion);
@@ -168,7 +169,7 @@ public class AgregarProducto extends AppCompatActivity {
                         String mypk = databaseReference.push().getKey();
                         producto.setPk(mypk);
 
-                        databaseReference.child("Productos/"+producto.getPk()).setValue(producto)
+                        databaseReference.child("Productos/"+firebaseUser.getUid()+"/"+producto.getPk()).setValue(producto)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -219,7 +220,7 @@ public class AgregarProducto extends AppCompatActivity {
                     Intent intent = new Intent(AgregarProducto.this, PaginaPrincipalEmpresa.class);
                     startActivity(intent);
                     finish();
-                    Toast.makeText(AgregarProducto.this, "Dispositivo agregado exitósamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AgregarProducto.this, "Producto agregado exitósamente", Toast.LENGTH_SHORT).show();
                 }
             });
             task.addOnFailureListener(new OnFailureListener() {
