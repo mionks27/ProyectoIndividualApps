@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import pe.pucp.tel306.Adapters.ProductosAdapterEmpresa;
+import pe.pucp.tel306.Adapters.ProductosClientesAdapter;
 import pe.pucp.tel306.Empresa.PaginaPrincipalEmpresa;
 import pe.pucp.tel306.Entity.Producto;
 import pe.pucp.tel306.MainActivity;
@@ -125,7 +126,7 @@ public class PaginaPrincipalCliente extends AppCompatActivity {
                     if(textView.getVisibility()==View.VISIBLE){
                         textView.setVisibility(View.INVISIBLE);
                     }
-                    ProductosAdapterEmpresa adapter = new ProductosAdapterEmpresa(productoArrayList,PaginaPrincipalCliente.this);
+                    ProductosClientesAdapter adapter = new ProductosClientesAdapter(productoArrayList,PaginaPrincipalCliente.this);
                     RecyclerView recyclerView = findViewById(R.id.recyclerViewProdusctosCliente);
                     recyclerView.setVisibility(View.VISIBLE);
                     recyclerView.setAdapter(adapter);
