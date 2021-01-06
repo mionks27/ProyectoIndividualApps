@@ -26,66 +26,24 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import pe.pucp.tel306.Adapters.ProductosAdapterEmpresa;
-import pe.pucp.tel306.Adapters.VentasPendientesAdapter;
+import pe.pucp.tel306.Adapters.HistorialAdapter;
+import pe.pucp.tel306.Adapters.HistorialEmpresaAdapter;
+import pe.pucp.tel306.Cliente.HisotrialPedidos;
+import pe.pucp.tel306.Cliente.PaginaPrincipalCliente;
+import pe.pucp.tel306.Cliente.PedidosPendientes;
 import pe.pucp.tel306.Entity.Peticioncompra;
-import pe.pucp.tel306.Entity.Producto;
 import pe.pucp.tel306.MainActivity;
 import pe.pucp.tel306.R;
 
-public class VentasPendientes extends AppCompatActivity {
+public class HistorialVentasEmpresa extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ventas_pendientes);
-        listarVentasPendientes();
+        setContentView(R.layout.activity_historial_ventas_empresa);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        listarHistorial();
     }
-
-
-    public void listarVentasPendientes(){
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        databaseReference.child("Solicitudes/").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<Peticioncompra> peticioncompraArrayList = new ArrayList<>();
-                for(DataSnapshot children : snapshot.getChildren()){
-                    Peticioncompra peticioncompra = children.getValue(Peticioncompra.class);
-                    if(peticioncompra.getProducto().getUidUser().equalsIgnoreCase(firebaseUser.getUid())){
-                        if(peticioncompra.getEstado().equalsIgnoreCase("Pendiente")){
-                            peticioncompraArrayList.add(peticioncompra);
-                        }
-                    }
-                }
-                if(!peticioncompraArrayList.isEmpty()){
-                    TextView textView = findViewById(R.id.textViewMessageVentasPendientes);
-                    if(textView.getVisibility()==View.VISIBLE){
-                        textView.setVisibility(View.INVISIBLE);
-                    }
-                    VentasPendientesAdapter adapter = new VentasPendientesAdapter(peticioncompraArrayList,VentasPendientes.this);
-                    RecyclerView recyclerView = findViewById(R.id.recyclerViewVentasPendientes);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(VentasPendientes.this));
-                }else{
-                    TextView textView = findViewById(R.id.textViewMessageVentasPendientes);
-                    textView.setVisibility(View.VISIBLE);
-                    RecyclerView recyclerView = findViewById(R.id.recyclerViewVentasPendientes);
-                    recyclerView.setVisibility(View.INVISIBLE);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,18 +65,18 @@ public class VentasPendientes extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.historialVentas:
-                                Intent intent = new Intent(VentasPendientes.this, HistorialVentasEmpresa.class);
-                                startActivity(intent);
-                                finish();
-                                return true;
-                            case R.id.reservasPendientes:
-//                                Intent intent1 = new Intent(PaginaPrincipalEmpresa.this, VentasPendientes.class);
-//                                startActivity(intent1);
+//                                Intent intent = new Intent(PaginaPrincipalTI.this, SolicitudesPendientes.class);
+//                                startActivity(intent);
 //                                finish();
                                 return true;
-                            case R.id.gestionarProductos:
-                                Intent intent1 = new Intent(VentasPendientes.this, PaginaPrincipalEmpresa.class);
+                            case R.id.reservasPendientes:
+                                Intent intent1 = new Intent(HistorialVentasEmpresa.this, VentasPendientes.class);
                                 startActivity(intent1);
+                                finish();
+                                return true;
+                            case R.id.gestionarProductos:
+                                Intent intent = new Intent(HistorialVentasEmpresa.this, PaginaPrincipalEmpresa.class);
+                                startActivity(intent);
                                 finish();
                                 return true;
                             case R.id.cerrarSesionempresa:
@@ -136,17 +94,61 @@ public class VentasPendientes extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    public void listarHistorial(){
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        databaseReference.child("Solicitudes/").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Peticioncompra> peticioncompraArrayList = new ArrayList<>();
+                for(DataSnapshot children : snapshot.getChildren()){
+                    Peticioncompra peticioncompra = children.getValue(Peticioncompra.class);
+                    if(peticioncompra.getProducto().getUidUser().equalsIgnoreCase(firebaseUser.getUid())){
+                        if(!peticioncompra.getEstado().equalsIgnoreCase("Pendiente")){
+                            peticioncompraArrayList.add(peticioncompra);
+                        }
+                    }
+                }
+                if(!peticioncompraArrayList.isEmpty()){
+                    TextView textView = findViewById(R.id.textViewMessageHistorialEmpresa);
+                    if(textView.getVisibility()== View.VISIBLE){
+                        textView.setVisibility(View.INVISIBLE);
+                    }
+                    HistorialEmpresaAdapter adapter = new HistorialEmpresaAdapter(peticioncompraArrayList, HistorialVentasEmpresa.this);
+                    RecyclerView recyclerView = findViewById(R.id.recyclerViewHistorialEmpresa);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(HistorialVentasEmpresa.this));
+                }else{
+                    TextView textView = findViewById(R.id.textViewMessageHistorialEmpresa);
+                    textView.setVisibility(View.VISIBLE);
+                    RecyclerView recyclerView = findViewById(R.id.recyclerViewHistorialEmpresa);
+                    recyclerView.setVisibility(View.INVISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     public void logOut(){
         AuthUI instance = AuthUI.getInstance();
         instance.signOut(this).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 // Lógica de cerrao de sesión lo pongo aquí porque luego lo ecesitaremos cuando acabemos el menú de cliente y TI
-                Intent intent = new Intent(VentasPendientes.this, MainActivity.class);
+                Intent intent = new Intent(HistorialVentasEmpresa.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
 
     }
+
 }

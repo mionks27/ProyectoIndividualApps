@@ -65,9 +65,9 @@ public class PaginaPrincipalEmpresa extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.historialVentas:
-//                                Intent intent = new Intent(PaginaPrincipalTI.this, SolicitudesPendientes.class);
-//                                startActivity(intent);
-//                                finish();
+                                Intent intent = new Intent(PaginaPrincipalEmpresa.this, HistorialVentasEmpresa.class);
+                                startActivity(intent);
+                                finish();
                                 return true;
                             case R.id.reservasPendientes:
                                 Intent intent1 = new Intent(PaginaPrincipalEmpresa.this, VentasPendientes.class);
