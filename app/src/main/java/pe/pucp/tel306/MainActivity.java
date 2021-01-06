@@ -44,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public void login(View view){
 
         List<AuthUI.IdpConfig> prooviders = Arrays.asList(
-                new  AuthUI.IdpConfig.EmailBuilder().build(),
-                new  AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build()
+                new  AuthUI.IdpConfig.EmailBuilder().build()
         );
 
         AuthUI instance = AuthUI.getInstance();
