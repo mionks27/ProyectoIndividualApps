@@ -60,7 +60,7 @@ public class ProductosAdapterEmpresa extends RecyclerView.Adapter<ProductosAdapt
                 FirebaseStorage.getInstance().getReference().child(producto.getPk()+"/"+producto.getNombreFoto());
         Glide.with(context).load(reference).into(holder.imagenPro);
         holder.nombre.setText("Nombre: "+producto.getNombre());
-        holder.precio.setText("Precio: "+ producto.getPrecio() + " Nuevos Soles");
+        holder.precio.setText("Precio(S/.): "+ producto.getPrecio());
         holder.descripcion.setText("Descripción: "+ producto.getDescricion());
         holder.stock.setText("Stock: "+ String.valueOf(producto.getStock()));
         holder.editar.setOnClickListener(new View.OnClickListener() {

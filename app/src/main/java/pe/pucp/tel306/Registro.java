@@ -3,6 +3,7 @@ package pe.pucp.tel306;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,14 +13,22 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import pe.pucp.tel306.Empresa.AgregarProducto;
+import pe.pucp.tel306.Empresa.PaginaPrincipalEmpresa;
 import pe.pucp.tel306.Entity.User;
 
 public class Registro extends AppCompatActivity {
@@ -67,30 +76,57 @@ public class Registro extends AppCompatActivity {
         if(distrito.getText().toString().trim().isEmpty()){
             distrito.setError("Este campo no puede ser vacío");
         }else{
-            if(phone.getText().toString().trim().isEmpty()){
-                phone.setError("Este campo no puede ser vacío");
+            if(phone.getText().toString().trim().isEmpty()||phone.getText().toString().trim().length()!=9){
+                phone.setError("Tiene que colocar 9 dígitos");
             }else{
                 if(nombreEmpresa.getText().toString().trim().isEmpty() && nombreEmpresa.getVisibility() == View.VISIBLE){
                     nombreEmpresa.setError("Este campo no puede ser vacío");
                 }else{
-                    user.setDistrito(distrito.getText().toString());
-                    user.setNombreEmpresa(nombreEmpresa.getText().toString());
-                    user.setTelefono(phone.getText().toString());
                     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                    databaseReference.child("users/"+firebaseUser.getUid()).setValue(user)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d("JULIO","GUARDADO EXITOSO EN TU DATABASE");
+
+                    databaseReference.child("users/").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            ArrayList<User> userArrayList = new ArrayList<>();
+                            for(DataSnapshot children : snapshot.getChildren()){
+                                User user = children.getValue(User.class);
+                                if(user.getRol().equalsIgnoreCase("Empresa") && user.getNombreEmpresa().equalsIgnoreCase(nombreEmpresa.getText().toString())){
+                                    userArrayList.add(user);
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    e.printStackTrace();
-                                }
-                            });
+                            }
+                            if(userArrayList.isEmpty()){
+                                user.setDistrito(distrito.getText().toString().trim());
+                                user.setNombreEmpresa(nombreEmpresa.getText().toString().trim());
+                                user.setTelefono(phone.getText().toString().trim());
+                                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                                databaseReference.child("users/"+firebaseUser.getUid()).setValue(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("JULIO","GUARDADO EXITOSO EN TU DATABASE");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        });
+                            }else{
+                                nombreEmpresa.setError("Este nombre ya ha sido usado");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
+
                 }
             }
         }

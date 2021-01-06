@@ -61,6 +61,9 @@ public class RechazarCompra extends AppCompatActivity {
         cliente.setText("Cliente: "+peticioncompra.getNombreComprador());
         TextView cantidad = findViewById(R.id.textViewCantidadRechazo);
          cantidad.setText("Cantidad: "+peticioncompra.getCantidad()+" unidades");
+        TextView precio = findViewById(R.id.textViewFechaclienteRechazo);
+        double precioTotal = peticioncompra.getProducto().getPrecio() * Double.valueOf(peticioncompra.getCantidad());
+        precio.setText("Precio total(S/.): "+ precioTotal);
     }
 
     public void rechazarVenta(View view){

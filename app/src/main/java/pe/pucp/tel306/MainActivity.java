@@ -104,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(MainActivity.this, PaginaPrincipalCliente.class);
                             startActivity(intent);
                             finish();
-                            Toast.makeText(MainActivity.this, "Inicio de Sesión Completado", Toast.LENGTH_SHORT).show();
+
                         }else{
                             Intent intent = new Intent(MainActivity.this, PaginaPrincipalEmpresa.class);
                             startActivity(intent);
                             finish();
-                            Toast.makeText(MainActivity.this, "Inicio de Sesión Completado", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(MainActivity.this, "Inicio de Sesión Completado", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }else{
