@@ -3,6 +3,7 @@ package pe.pucp.tel306;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +30,7 @@ public class Registro extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         name = findViewById(R.id.textView7);
         nombreEmpresa = findViewById(R.id.editTextNombreEmpresa);
         distrito = findViewById(R.id.editTextDistrito);

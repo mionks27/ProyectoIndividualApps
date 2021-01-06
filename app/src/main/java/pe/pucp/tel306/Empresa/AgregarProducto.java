@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -58,6 +59,7 @@ public class AgregarProducto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_producto);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Intent intent =  getIntent();
         user = (User) intent.getSerializableExtra("user");
     }
@@ -157,49 +159,61 @@ public class AgregarProducto extends AppCompatActivity {
         EditText editTextTextDescripcion = findViewById(R.id.editTextDescripcion);
         EditText editTextTextPrecio = findViewById(R.id.editTextPrecio);
         EditText editTextNumberStock = findViewById(R.id.editTextStock);
-        if(editTextNombre.getText().toString().trim().isEmpty()){
-            editTextNombre.setError("Este campo no puede ser vacío");
+        ImageView foto = findViewById(R.id.imageViewFotoProductoCrear);
+        TextView textViewFoto21 = findViewById(R.id.textViewRutafoto);
+        if(foto.getVisibility() == View.INVISIBLE && textViewFoto21.getVisibility() == View.INVISIBLE){
+            Toast.makeText(AgregarProducto.this, "Debe escoger o tomar una foto", Toast.LENGTH_SHORT).show();
         }else{
-            if(editTextTextDescripcion.getText().toString().trim().isEmpty()){
-                editTextTextDescripcion.setError("Este campo no puede ser vacío");
+            if(editTextNombre.getText().toString().trim().isEmpty()){
+                editTextNombre.setError("Este campo no puede ser vacío");
             }else{
-                if(editTextTextPrecio.getText().toString().trim().isEmpty()){
-                    editTextTextPrecio.setError("Este campo no puede ser vacío");
+                if(editTextTextDescripcion.getText().toString().trim().isEmpty() || editTextTextDescripcion.getText().toString().length()>50){
+                    editTextTextDescripcion.setError("de 1 a 50 caracteres");
                 }else{
-                    if(editTextNumberStock.getText().toString().trim().isEmpty()){
-                        editTextNumberStock.setError("Este campo no puede ser vacío");
+                    if(editTextTextPrecio.getText().toString().trim().isEmpty() || editTextTextPrecio.getText().toString().length()>7){
+                        editTextTextPrecio.setError("de 1 a 6 digítos");
                     }else{
-                        producto.setStock(Integer.parseInt(editTextNumberStock.getText().toString()));
-                        producto.setNombre(editTextNombre.getText().toString());
-                        producto.setDescricion(editTextTextDescripcion.getText().toString());
-                        producto.setPrecio(Double.parseDouble(editTextTextPrecio.getText().toString()));
-                        final TextView textViewFoto = findViewById(R.id.textViewRutafoto);
+                        if(editTextNumberStock.getText().toString().trim().isEmpty() || editTextNumberStock.getText().toString().length()>6){
+                            editTextNumberStock.setError("de 1 a 6 caracteres");
+                        }else{
+                            int stock = Integer.parseInt(editTextNumberStock.getText().toString());
+                            if(stock < 0){
+                                editTextNumberStock.setError("Este campo tiene que ser mayor a 0");
+                            }else{
+                                producto.setStock(Integer.parseInt(editTextNumberStock.getText().toString()));
+                                producto.setNombre(editTextNombre.getText().toString());
+                                producto.setDescricion(editTextTextDescripcion.getText().toString());
+                                producto.setPrecio(Double.parseDouble(editTextTextPrecio.getText().toString()));
+                                final TextView textViewFoto = findViewById(R.id.textViewRutafoto);
 
-                        String mypk = databaseReference.push().getKey();
-                        producto.setPk(mypk);
-                        producto.setUidUser(firebaseUser.getUid());
-                        producto.setNombreEmpresa(user.getNombreEmpresa());
+                                String mypk = databaseReference.push().getKey();
+                                producto.setPk(mypk);
+                                producto.setUidUser(firebaseUser.getUid());
+                                producto.setNombreEmpresa(user.getNombreEmpresa());
 
-                        databaseReference.child("Productos/"+producto.getPk()).setValue(producto)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("JULIO","GUARDADO EXITOSO EN TU DATABASE");
+                                databaseReference.child("Productos/"+producto.getPk()).setValue(producto)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("JULIO","GUARDADO EXITOSO EN TU DATABASE");
 
-                                        if(textViewFoto.getVisibility()==View.VISIBLE){
-                                            subirArchivoConPutFile(textViewFoto.getText().toString());
-                                        }else{
-                                            subirArchivoConPutFile(producto.getNombreFoto());
-                                        }
+                                                if(textViewFoto.getVisibility()==View.VISIBLE){
+                                                    subirArchivoConPutFile(textViewFoto.getText().toString());
+                                                }else{
+                                                    subirArchivoConPutFile(producto.getNombreFoto());
+                                                }
 
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                });
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        });
+
+                            }
+                        }
                     }
                 }
             }

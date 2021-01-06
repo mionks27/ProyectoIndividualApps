@@ -28,7 +28,8 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/TemaPrincipal">
-        <activity android:name=".Cliente.HisotrialPedidos"></activity>
+        <activity android:name=".Cliente.PedidosPendientes"></activity>
+        <activity android:name=".Cliente.HisotrialPedidos" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

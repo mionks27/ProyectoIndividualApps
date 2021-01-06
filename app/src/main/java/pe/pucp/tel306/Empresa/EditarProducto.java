@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ public class EditarProducto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_producto);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Intent intent =  getIntent();
         producto = (Producto) intent.getSerializableExtra("producto");
         EditText stock = findViewById(R.id.editTextNumberStockEditar);
@@ -53,36 +55,42 @@ public class EditarProducto extends AppCompatActivity {
         EditText stock = findViewById(R.id.editTextNumberStockEditar);
         EditText precio = findViewById(R.id.editTextNumberDecimalPrecioEditar);
         EditText descripcion = findViewById(R.id.editTextTextMultiLinedescripcionEditar);
-        if(stock.getText().toString().trim().isEmpty()){
-            stock.setError("Este campo no puede ser vacío");
+        if(stock.getText().toString().trim().isEmpty() || stock.getText().toString().length()>6){
+            stock.setError("de 1 a 6 dígitos");
         }else{
-            if(precio.getText().toString().trim().isEmpty()){
-                precio.setError("Este campo no puede ser vacío");
+            if(precio.getText().toString().trim().isEmpty() || precio.getText().toString().length()>7){
+                precio.setError("de 1 a 7 dígitos");
             }else{
-                if(descripcion.getText().toString().trim().isEmpty()){
-                    descripcion.setError("Este campo no puede ser vacío");
+                if(descripcion.getText().toString().trim().isEmpty() || descripcion.getText().toString().length()>50){
+                    descripcion.setError("de 1 a 50 caracteres");
                 }else{
-                    producto.setStock(Integer.parseInt(stock.getText().toString()));
-                    producto.setPrecio(Double.parseDouble(precio.getText().toString()));
-                    producto.setDescricion(descripcion.getText().toString());
+                    int stockk = Integer.parseInt(stock.getText().toString());
+                    if(stockk < 0){
+                        stock.setError("Este campo tiene que ser mayor a 0");
+                    }else{
+                        producto.setStock(Integer.parseInt(stock.getText().toString().trim()));
+                        producto.setPrecio(Double.parseDouble(precio.getText().toString().trim()));
+                        producto.setDescricion(descripcion.getText().toString().trim());
 
-                    databaseReference.child("Productos/"+producto.getPk()).setValue(producto)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d("JULIO","GUARDADO EXITOSO EN TU DATABASE");
-                                    Intent intent = new Intent(EditarProducto.this, PaginaPrincipalEmpresa.class);
-                                    startActivity(intent);
-                                    finish();
-                                    Toast.makeText(EditarProducto.this, "Producto editado exitósamente", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    e.printStackTrace();
-                                }
-                            });
+                        databaseReference.child("Productos/"+producto.getPk()).setValue(producto)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("JULIO","GUARDADO EXITOSO EN TU DATABASE");
+                                        Intent intent = new Intent(EditarProducto.this, PaginaPrincipalEmpresa.class);
+                                        startActivity(intent);
+                                        finish();
+                                        Toast.makeText(EditarProducto.this, "Producto editado exitósamente", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                    }
+
 
                 }
             }

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -49,6 +50,7 @@ public class CompraProducto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compra_producto);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Intent intent =  getIntent();
         producto = (Producto) intent.getSerializableExtra("producto");
         System.out.println("AHHHHHHHHHHHHHHHHHHHHHHHHH" + producto.getNombre());
@@ -133,35 +135,39 @@ public class CompraProducto extends AppCompatActivity {
             final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
             EditText cantidadAComprar = findViewById(R.id.editTextNumberCantidadAComprar);
-            int cantidad = Integer.parseInt(cantidadAComprar.getText().toString());
-            if(cantidadAComprar.getText().toString().trim().isEmpty() || cantidad>producto.getStock()){
+            if(cantidadAComprar.getText().toString().trim().isEmpty() || cantidadAComprar.getText().toString().length() > 10 ){
                 cantidadAComprar.setError("Ingrese una cantidad válida.");
             }else{
-                peticioncompra.setCantidad(cantidad);
-                TextView textViewGps = findViewById(R.id.textViewUbicacionCompra);
-                peticioncompra.setProducto(producto);
-                peticioncompra.setEstado("Pendiente");
-                peticioncompra.setUbicacionGps(textViewGps.getText().toString());
-                peticioncompra.setNombreComprador(firebaseUser.getDisplayName());
-                peticioncompra.setUiComprador(firebaseUser.getUid());
-                peticioncompra.setCorreoUser(firebaseUser.getEmail());
-                String mypk = databaseReference.push().getKey();
-                peticioncompra.setPk(mypk);
+                int cantidad = Integer.parseInt(cantidadAComprar.getText().toString());
+                if(cantidad > producto.getStock()){
+                    cantidadAComprar.setError("Ingrese una cantidad válida.");
+                }else{
+                    peticioncompra.setCantidad(cantidad);
+                    TextView textViewGps = findViewById(R.id.textViewUbicacionCompra);
+                    peticioncompra.setProducto(producto);
+                    peticioncompra.setEstado("Pendiente");
+                    peticioncompra.setUbicacionGps(textViewGps.getText().toString());
+                    peticioncompra.setNombreComprador(firebaseUser.getDisplayName());
+                    peticioncompra.setUiComprador(firebaseUser.getUid());
+                    peticioncompra.setCorreoUser(firebaseUser.getEmail());
+                    String mypk = databaseReference.push().getKey();
+                    peticioncompra.setPk(mypk);
 
-                databaseReference.child("Solicitudes/" + mypk).setValue(peticioncompra)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d("infoApp", "GUARDADO EXITOSO de reserva EN TU DATABASE");
-                                reducirStock(producto,peticioncompra);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
+                    databaseReference.child("Solicitudes/" + mypk).setValue(peticioncompra)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d("infoApp", "GUARDADO EXITOSO de reserva EN TU DATABASE");
+                                    reducirStock(producto,peticioncompra);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                }
             }
         } else {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);

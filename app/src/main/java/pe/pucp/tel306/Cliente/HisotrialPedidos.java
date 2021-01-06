@@ -5,10 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,8 +28,10 @@ import java.util.ArrayList;
 
 import pe.pucp.tel306.Adapters.HistorialAdapter;
 import pe.pucp.tel306.Adapters.VentasPendientesAdapter;
+import pe.pucp.tel306.Empresa.PaginaPrincipalEmpresa;
 import pe.pucp.tel306.Empresa.VentasPendientes;
 import pe.pucp.tel306.Entity.Peticioncompra;
+import pe.pucp.tel306.MainActivity;
 import pe.pucp.tel306.R;
 
 public class HisotrialPedidos extends AppCompatActivity {
@@ -31,8 +40,60 @@ public class HisotrialPedidos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hisotrial_pedidos);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         listarHistorial();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cliente, menu);
+        return true;
+    }
+
+    ///para linkear las opciones del menú con una acción en particular de forma centralizada ///también puede realizarse desde el primer método onCreate pero de otra manera, revisar min 01:18:43 del video zoom
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuCliente:
+                View view = findViewById(R.id.menuCliente);
+                PopupMenu popupMenu = new PopupMenu(this, view);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_popup_cliente, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.historialCompras:
+//                                Intent intent = new Intent(PaginaPrincipalCliente.this, HisotrialPedidos.class);
+//                                startActivity(intent);
+//                                finish();
+                                return true;
+                            case R.id.comprasRecientes:
+                                Intent intent1 = new Intent(HisotrialPedidos.this, PedidosPendientes.class);
+                                startActivity(intent1);
+                                finish();
+                                return true;
+                            case R.id.verProductos:
+                                Intent intent = new Intent(HisotrialPedidos.this, PaginaPrincipalCliente.class);
+                                startActivity(intent);
+                                finish();
+                                return true;
+                            case R.id.cerrarsesion:
+                                logOut();
+                                return true;
+                            default:
+                                return false;
+
+                        }
+                    }
+                });
+                popupMenu.show();
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void listarHistorial(){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -74,6 +135,19 @@ public class HisotrialPedidos extends AppCompatActivity {
 
             }
         });
+    }
+    public void logOut(){
+        AuthUI instance = AuthUI.getInstance();
+        instance.signOut(this).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Lógica de cerrao de sesión lo pongo aquí porque luego lo ecesitaremos cuando acabemos el menú de cliente y TI
+                Intent intent = new Intent(HisotrialPedidos.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
 

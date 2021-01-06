@@ -19,14 +19,18 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 import pe.pucp.tel306.Empresa.EditarProducto;
+import pe.pucp.tel306.Entity.Peticioncompra;
 import pe.pucp.tel306.Entity.Producto;
 import pe.pucp.tel306.R;
 
@@ -71,20 +75,46 @@ public class ProductosAdapterEmpresa extends RecyclerView.Adapter<ProductosAdapt
             @Override
             public void onClick(View v) {
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                databaseReference.child("Productos/"+producto.getPk()).setValue(null)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d("JULIO","BORRADO EXITOSO EN TU DATABASE");
-                                Toast.makeText(context, "Producto borrado exitósamente", Toast.LENGTH_SHORT).show();
+                databaseReference.child("Solicitudes/").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<Peticioncompra> peticioncompraArrayList = new ArrayList<>();
+                        for (DataSnapshot children : snapshot.getChildren()) {
+                            Peticioncompra peticioncompra = children.getValue(Peticioncompra.class);
+                            if (peticioncompra.getProducto().getPk().equalsIgnoreCase(producto.getPk())) {
+                                if (peticioncompra.getEstado().equalsIgnoreCase("Pendiente")) {
+                                    peticioncompraArrayList.add(peticioncompra);
+                                }
+
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
+
+                        }
+                        if (!peticioncompraArrayList.isEmpty()) {
+                            Toast.makeText(context, "Se tienen Peticiones de Venta Pendientes", Toast.LENGTH_SHORT).show();
+                        }else{
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                            databaseReference.child("Productos/"+producto.getPk()).setValue(null)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("JULIO","BORRADO EXITOSO EN TU DATABASE");
+                                            Toast.makeText(context, "Producto borrado exitósamente", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
+
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
             }
         });

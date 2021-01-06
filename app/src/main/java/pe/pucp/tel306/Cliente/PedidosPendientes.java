@@ -1,7 +1,6 @@
 package pe.pucp.tel306.Cliente;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +18,6 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,24 +26,20 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import pe.pucp.tel306.Adapters.ProductosAdapterEmpresa;
-import pe.pucp.tel306.Adapters.ProductosClientesAdapter;
-import pe.pucp.tel306.Empresa.PaginaPrincipalEmpresa;
-import pe.pucp.tel306.Entity.Producto;
+import pe.pucp.tel306.Adapters.HistorialAdapter;
+import pe.pucp.tel306.Entity.Peticioncompra;
 import pe.pucp.tel306.MainActivity;
 import pe.pucp.tel306.R;
 
-public class PaginaPrincipalCliente extends AppCompatActivity {
+public class PedidosPendientes extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pagina_principal_cliente);
-        listarProductos();
+        setContentView(R.layout.activity_pedidos_pendientes);
+        listarPedidosPendientes();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-
-    ////para relacionar el layout de menú con esta vista
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,19 +61,19 @@ public class PaginaPrincipalCliente extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()){
                             case R.id.historialCompras:
-                                Intent intent = new Intent(PaginaPrincipalCliente.this, HisotrialPedidos.class);
+                                Intent intent = new Intent(PedidosPendientes.this, HisotrialPedidos.class);
                                 startActivity(intent);
                                 finish();
                                 return true;
                             case R.id.comprasRecientes:
-                                Intent intent1 = new Intent(PaginaPrincipalCliente.this, PedidosPendientes.class);
-                                startActivity(intent1);
-                                finish();
+//                                Intent intent1 = new Intent(PaginaPrincipalTI.this, SolicitudesPendientes.class);
+//                                startActivity(intent1);
+//                                finish();
                                 return true;
                             case R.id.verProductos:
-//                                Intent intent = new Intent(PaginaPrincipalTI.this, SolicitudesPendientes.class);
-//                                startActivity(intent);
-//                                finish();
+                                Intent intent1 = new Intent(PedidosPendientes.this, PaginaPrincipalCliente.class);
+                                startActivity(intent1);
+                                finish();
                                 return true;
                             case R.id.cerrarsesion:
                                 logOut();
@@ -97,46 +91,37 @@ public class PaginaPrincipalCliente extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void logOut(){
-        AuthUI instance = AuthUI.getInstance();
-        instance.signOut(this).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                // Lógica de cerrao de sesión lo pongo aquí porque luego lo ecesitaremos cuando acabemos el menú de cliente y TI
-                Intent intent = new Intent(PaginaPrincipalCliente.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
-    }
-
-    public void listarProductos(){
+    public void listarPedidosPendientes(){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        databaseReference.child("Productos/").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Solicitudes/").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<Producto> productoArrayList = new ArrayList<>();
+                ArrayList<Peticioncompra> peticioncompraArrayList = new ArrayList<>();
                 for(DataSnapshot children : snapshot.getChildren()){
-                    Producto producto = children.getValue(Producto.class);
-                        productoArrayList.add(producto);
+                    Peticioncompra peticioncompra = children.getValue(Peticioncompra.class);
+                    if(peticioncompra.getUiComprador().equalsIgnoreCase(firebaseUser.getUid())){
+                        if(peticioncompra.getEstado().equalsIgnoreCase("Pendiente")){
+                            peticioncompraArrayList.add(peticioncompra);
+                        }
+                    }
                 }
-                if(!productoArrayList.isEmpty()){
-                    TextView textView = findViewById(R.id.textViewMessagecliente);
-                    if(textView.getVisibility()==View.VISIBLE){
+                if(!peticioncompraArrayList.isEmpty()){
+                    TextView textView = findViewById(R.id.textViewMessagePedidoPendiente);
+                    if(textView.getVisibility()== View.VISIBLE){
                         textView.setVisibility(View.INVISIBLE);
                     }
-                    ProductosClientesAdapter adapter = new ProductosClientesAdapter(productoArrayList,PaginaPrincipalCliente.this);
-                    RecyclerView recyclerView = findViewById(R.id.recyclerViewProdusctosCliente);
+                    HistorialAdapter adapter = new HistorialAdapter(peticioncompraArrayList, PedidosPendientes.this);
+                    RecyclerView recyclerView = findViewById(R.id.recyclerViewPedidoPendiente);
                     recyclerView.setVisibility(View.VISIBLE);
                     recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(PaginaPrincipalCliente.this));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(PedidosPendientes.this));
                 }else{
-                    TextView textView = findViewById(R.id.textViewMessagecliente);
+                    TextView textView = findViewById(R.id.textViewMessagePedidoPendiente);
                     textView.setVisibility(View.VISIBLE);
-                    RecyclerView recyclerView = findViewById(R.id.recyclerViewProdusctosCliente);
+                    RecyclerView recyclerView = findViewById(R.id.recyclerViewPedidoPendiente);
                     recyclerView.setVisibility(View.INVISIBLE);
                 }
 
@@ -147,6 +132,19 @@ public class PaginaPrincipalCliente extends AppCompatActivity {
 
             }
         });
+    }
+    public void logOut(){
+        AuthUI instance = AuthUI.getInstance();
+        instance.signOut(this).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Lógica de cerrao de sesión lo pongo aquí porque luego lo ecesitaremos cuando acabemos el menú de cliente y TI
+                Intent intent = new Intent(PedidosPendientes.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
 }
