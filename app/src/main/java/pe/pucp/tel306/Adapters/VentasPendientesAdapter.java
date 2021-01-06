@@ -111,18 +111,18 @@ public class VentasPendientesAdapter extends RecyclerView.Adapter<VentasPendient
                 databaseReference.child("Productos/").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Producto producto1 = null;
+                        ArrayList<Producto> productoArrayList = new ArrayList<>();
                         for(DataSnapshot children : snapshot.getChildren()){
                             Producto producto = children.getValue(Producto.class);
                             if(producto.getPk().equalsIgnoreCase(peticioncompra.getProducto().getPk())){
-                                producto1 = producto;
+                                productoArrayList.add(producto);
                             }
                         }
 
-                        if(producto1 != null){
+                        if(!productoArrayList.isEmpty()){
                             Intent intent = new Intent(context, RechazarCompra.class);
                             intent.putExtra("peticioncompra", peticioncompra);
-                            intent.putExtra("producto",producto1);
+                            intent.putExtra("producto",productoArrayList.get(0));
                             context.startActivity(intent);
                         }
                     }
